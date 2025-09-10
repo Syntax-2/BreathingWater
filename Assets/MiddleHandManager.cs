@@ -10,11 +10,18 @@ public class MiddleHandManager : MonoBehaviour
     public float yOffset;
     public float xOffset;
 
+    public SpriteRenderer spriteRenderer;
+
+    public Sprite handClosed;
+    public Sprite handOpened;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        spriteRenderer.sprite = handOpened;
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -28,6 +35,20 @@ public class MiddleHandManager : MonoBehaviour
         Vector3 targetPos = ActiveCamera.ScreenToWorldPoint(mousePos);
 
         transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            spriteRenderer.sprite = handClosed;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            spriteRenderer.sprite = handOpened;
+        }
+
     }
+
+    
+
 }
 
