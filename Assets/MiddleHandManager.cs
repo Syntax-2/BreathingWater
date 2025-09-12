@@ -48,6 +48,15 @@ public class MiddleHandManager : MonoBehaviour
 
     }
 
+    public void HandClosed()
+    {
+        spriteRenderer.sprite = handClosed;
+    }
+    
+    public void HandOpen()
+    {
+        spriteRenderer.sprite = handOpened;
+    }
     
 
 }
