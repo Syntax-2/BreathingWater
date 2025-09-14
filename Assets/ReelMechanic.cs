@@ -6,7 +6,7 @@ public class ReelMechanic : MonoBehaviour
     public Transform handTransform;
     public Transform handleTransform;
     public Transform reelHandleTransform;
-
+ 
     public Vector3 handleOffset;
 
     public Camera mainCamera;
@@ -19,6 +19,8 @@ public class ReelMechanic : MonoBehaviour
     private bool isHoldingHandle = false;
     private float lastMouseAngle = 0f;
     private float totalAngleRotated = 0f;
+
+    public GameObject runeFragmentsPrefab;
 
     private MiddleHandManager handManager;
 
@@ -82,7 +84,7 @@ public class ReelMechanic : MonoBehaviour
             float deltaAngle = Mathf.DeltaAngle(lastMouseAngle, currentAngle);
 
 
-            reelHandleTransform.Rotate(Vector3.forward, -deltaAngle);
+            reelHandleTransform.Rotate(-(Vector3.forward), -deltaAngle);
             totalAngleRotated += deltaAngle;
 
             if(Mathf.Abs(totalAngleRotated) >= 360f)
@@ -94,9 +96,14 @@ public class ReelMechanic : MonoBehaviour
 
             lastMouseAngle = currentAngle;
 
+
         }
 
+    }
 
+    public void CastLine()
+    {
 
     }
+
 }
