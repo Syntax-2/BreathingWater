@@ -11,6 +11,8 @@ public class ReelMechanic : MonoBehaviour
 
     public Camera mainCamera;
 
+
+    public float maxReelProgress = 100;
     public float progressPerRotation = 10f;
     public float grabRadius = 50f;
 
@@ -23,6 +25,7 @@ public class ReelMechanic : MonoBehaviour
     public GameObject runeFragmentsPrefab;
 
     private MiddleHandManager handManager;
+    public GameManager gameManager;
 
 
 
@@ -85,19 +88,41 @@ public class ReelMechanic : MonoBehaviour
 
 
             reelHandleTransform.Rotate(-(Vector3.forward), -deltaAngle);
-            totalAngleRotated += deltaAngle;
+            
 
-            if(Mathf.Abs(totalAngleRotated) >= 360f)
-            {
-                reelProgress += progressPerRotation;
-                Debug.Log("Full Rotation Completed!!!  " + reelProgress);
-                totalAngleRotated -= 360f * Mathf.Sign(totalAngleRotated);
-            }
+            float progressThisFrame = (deltaAngle / 360f) * progressPerRotation;
+
+            reelProgress += progressThisFrame;
+
+            reelProgress = Mathf.Clamp(reelProgress, 0f, maxReelProgress);
 
             lastMouseAngle = currentAngle;
 
 
+
+
         }
+
+
+        if (reelProgress <= 1f)
+        {
+            Debug.Log("Fishing");
+            gameManager.isFishing = true;
+        }
+        else
+        {
+            Debug.Log("NOTFishing");
+            gameManager.isFishing = false;
+        }
+
+        if (reelProgress >= 99f)
+        {
+            Debug.Log("Reeled in");
+            
+        }
+
+
+
 
     }
 

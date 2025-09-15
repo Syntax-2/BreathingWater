@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     public int sealsToAttune;
     public int sealsAttuned;
 
+    public bool isFishing;
+
+    public GameObject WaterAnimation;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,6 +21,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        WaterAnimation.SetActive(isFishing);
+
         
     }
 }
