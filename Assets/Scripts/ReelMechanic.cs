@@ -73,6 +73,17 @@ public class ReelMechanic : MonoBehaviour
             handManager.HandOpen();
             if (handManager != null) handManager.enabled = true;
 
+            if (gameManager.isFishing)
+            {
+                Debug.Log("WorksFromREEELMECHANICfishing");
+                gameManager.StartFishing();
+            }
+            else
+            {
+                Debug.Log("WorksFromREEELMECHANICnotfishing");
+                gameManager.CancelFishing();
+            }
+
         }
 
         if (isHoldingHandle)

@@ -2437,8 +2437,12 @@ MonoBehaviour:
   threatLevel: 0
   sealsToAttune: 0
   sealsAttuned: 0
+  minTimeForCatch: 5
+  maxTimeForCatch: 30
   isFishing: 0
+  GotBite: 0
   WaterAnimation: {fileID: 1544327368}
+  BiteAnimation: {fileID: 0}
 --- !u!4 &1683415629
 Transform:
   m_ObjectHideFlags: 0
