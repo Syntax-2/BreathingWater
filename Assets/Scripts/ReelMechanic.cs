@@ -50,6 +50,17 @@ public class ReelMechanic : MonoBehaviour
             float distanceToHandle = Vector2.Distance(Input.mousePosition, handleScreenPos);
 
 
+            if (gameManager.isFishing)
+            {
+                Debug.Log("WorksFromREEELMECHANICfishing");
+                gameManager.StartFishing();
+            }
+            else
+            {
+                Debug.Log("WorksFromREEELMECHANICnotfishing");
+                gameManager.CancelFishing();
+            }
+
             Debug.Log(distanceToHandle);
             if (distanceToHandle <= grabRadius)
             {
@@ -64,6 +75,9 @@ public class ReelMechanic : MonoBehaviour
                 totalAngleRotated = 0f;
 
             }
+
+            
+
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -73,16 +87,7 @@ public class ReelMechanic : MonoBehaviour
             handManager.HandOpen();
             if (handManager != null) handManager.enabled = true;
 
-            if (gameManager.isFishing)
-            {
-                Debug.Log("WorksFromREEELMECHANICfishing");
-                gameManager.StartFishing();
-            }
-            else
-            {
-                Debug.Log("WorksFromREEELMECHANICnotfishing");
-                gameManager.CancelFishing();
-            }
+            
 
         }
 

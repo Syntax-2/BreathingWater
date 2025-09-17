@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -15,16 +17,26 @@ public class GameManager : MonoBehaviour
     public bool isFishing;
     public bool GotBite;
 
+    public bool didCatch;
+
     private bool isWaitingForBite = false;
 
 
     public GameObject WaterAnimation;
     public GameObject BiteAnimation;
 
+    public List<GameObject> fishedItems;
+    public Transform spawnPoint;
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        isFishing = true;
+        GotBite = false;
+        didCatch = false;
+        StartFishing();
     }
 
     // Update is called once per frame
@@ -38,11 +50,20 @@ public class GameManager : MonoBehaviour
     public void StartFishing()
     {
         if (WaterAnimation != null) WaterAnimation.SetActive(true);
-        if (!isWaitingForBite)
+        if (!isWaitingForBite && !GotBite)
         {
             StartCoroutine("WaitingForFish");
         }
-        
+
+        if (GotBite)
+        {
+            didCatch = true;
+            if (BiteAnimation != null) BiteAnimation.SetActive(false);
+            if (WaterAnimation != null) WaterAnimation.SetActive(false);
+            SpawnFishedOutItem();
+        }
+
+
     }
 
     public void CancelFishing()
@@ -50,6 +71,16 @@ public class GameManager : MonoBehaviour
         Debug.Log("Stoped Fishing");
 
         StopCoroutine("WaitingForFish");
+        StopCoroutine("BiteSystem");
+
+        if (GotBite)
+        {
+            didCatch = true;
+            if (BiteAnimation != null) BiteAnimation.SetActive(false);
+            if (WaterAnimation != null) WaterAnimation.SetActive(false);
+            SpawnFishedOutItem();
+        }
+
 
         isWaitingForBite = false;
         if(WaterAnimation != null) WaterAnimation.SetActive(false);
@@ -71,8 +102,55 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("GOT BITE");
         GotBite = true;
+        
         isWaitingForBite = false;
+        StartCoroutine("BiteSystem");
 
     }
+
+    IEnumerator BiteSystem()
+    {
+
+        int randomTimeForReelOut = Random.Range(minTimeForCatch, maxTimeForCatch);
+        if(BiteAnimation != null) BiteAnimation.SetActive(true);
+
+
+
+        yield return new WaitForSeconds(randomTimeForReelOut);
+        if (BiteAnimation != null) BiteAnimation.SetActive(false);
+        Debug.Log("Fish escaped");
+        GotBite = false;
+        StartCoroutine("WaitingForFish");
+
+    }
+
+
+    public void SpawnFishedOutItem()
+    {
+
+        if(fishedItems == null || fishedItems.Count == 0)
+        {
+            Debug.Log("the fishing item list is empty");
+            return;
+        }
+
+        if(spawnPoint == null)
+        {
+            Debug.Log("Spawn point is empty");
+            return;  
+        }
+
+        int randomItemToSpawn = Random.Range(0, fishedItems.Count);
+
+        GameObject itemToSpawn = fishedItems[randomItemToSpawn];
+
+        GameObject SpawnedObject = Instantiate(itemToSpawn, spawnPoint.position, spawnPoint.rotation);
+
+        SpawnedObject.transform.SetParent(spawnPoint.transform);
+
+        GotBite = false;
+
+    }
+
 
 }
